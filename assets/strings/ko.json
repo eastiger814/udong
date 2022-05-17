@@ -1,7 +1,9 @@
 {
+  "app_name":"우동",
   "id":"아이디",
   "password":"패스워드",
   "sign_in":"회원가입",
+  "login":"로그인",
   "gender":{
     "male":"Hi man ;) {}",
     "female":"Hello girl :) {}",

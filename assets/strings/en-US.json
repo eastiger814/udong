@@ -1,7 +1,9 @@
 {
+  "app_name":"Udong",
   "id":"ID",
   "password":"Password",
   "sign_in":"Sign In",
+  "login":"Login",
   "gender":{
     "male":"Hi man ;) {}",
     "female":"Hello girl :) {}",
