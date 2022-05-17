@@ -1,0 +1,10 @@
+{
+  "id":"ID",
+  "password":"Password",
+  "sign_in":"Sign In",
+  "gender":{
+    "male":"Hi man ;) {}",
+    "female":"Hello girl :) {}",
+    "other":"Hello {}"
+  }
+}

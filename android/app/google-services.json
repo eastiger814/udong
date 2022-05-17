@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "329370260671",
+    "project_id": "udon-189f3",
+    "storage_bucket": "udon-189f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329370260671:android:6d5e54cae23a8811fde20a",
+        "android_client_info": {
+          "package_name": "com.eastiger.udon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329370260671-mohi59fb6ea1mjepr8bd4ut1fn1463lg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLta8e03SctIFx26EgNyqWNF-G4rMeXiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329370260671-mohi59fb6ea1mjepr8bd4ut1fn1463lg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
