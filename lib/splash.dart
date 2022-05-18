@@ -25,6 +25,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      Navigator.pop(context);
       if (user == null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
       } else {
