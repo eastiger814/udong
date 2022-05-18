@@ -1,12 +1,17 @@
 {
-  "app_name":"Udong",
-  "id":"ID",
-  "password":"Password",
-  "sign_in":"Sign In",
-  "login":"Login",
-  "gender":{
-    "male":"Hi man ;) {}",
-    "female":"Hello girl :) {}",
-    "other":"Hello {}"
+  "app_name": "Udong",
+  "e_mail": "E-mail",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "login": "Login",
+  "confirm": "Confirm",
+  "warning": "Warning",
+  "sign_up": {
+    "title": "Sign up",
+    "content": "Please input account you want to create.",
+    "email_empty": "E-mail is empty. Please input id.",
+    "email_duplicate_check": "Duplicate check",
+    "password_short": "Password is too short. Please input password over 7.",
+    "password_is_not_same": "Password is not same. Please check password."
   }
 }

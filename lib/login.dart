@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:udon/signup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -21,7 +22,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final idTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   int _counter = 0;
@@ -54,8 +54,9 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Padding (
-          padding: const EdgeInsets.only(left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -83,10 +84,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              ElevatedButton(onPressed: () async {
-                //await FirebaseAuth.instance.createUserWithEmailAndPassword(email: idTextController.text, password: passwordTextController.text);
-                await FirebaseAuth.instance.signInWithEmailAndPassword(email: idTextController.text, password: passwordTextController.text);
-              }, child: Text('login'.tr()))
+              ElevatedButton(
+                  onPressed: () async {
+                    //await FirebaseAuth.instance.createUserWithEmailAndPassword(email: idTextController.text, password: passwordTextController.text);
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: idTextController.text,
+                        password: passwordTextController.text);
+                  },
+                  child: Text('login'.tr())),
+              ElevatedButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              SignUpPage()),
+                    );
+                  },
+                  child: Text('sign_up.title'.tr()))
             ],
           ),
         ),

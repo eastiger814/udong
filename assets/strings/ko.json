@@ -1,12 +1,17 @@
 {
-  "app_name":"우동",
-  "id":"아이디",
-  "password":"패스워드",
-  "sign_in":"회원가입",
-  "login":"로그인",
-  "gender":{
-    "male":"Hi man ;) {}",
-    "female":"Hello girl :) {}",
-    "other":"Hello {}"
+  "app_name": "우동",
+  "e_mail": "이메일",
+  "password": "패스워드",
+  "confirm_password": "비밀번호 확인",
+  "login": "로그인",
+  "confirm": "확인",
+  "warning": "경고",
+  "sign_up": {
+    "title": "회원가입",
+    "content": "생성할 계정 정보를 입력해주세요.",
+    "email_empty": "아이디를 입력해주세요.",
+    "email_duplicate_check": "중복체크",
+    "password_short": "패스워드를 8자 이상 입력해주세요",
+    "password_is_not_same": "패스워드가 동일하지 않습니다. 확인 부탁드려요."
   }
 }
