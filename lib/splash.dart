@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
+import 'map.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -17,23 +18,17 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Timer(
-      const Duration(seconds: 3),
-      () => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => LoginPage(title: "app_name".tr())),
-      ),
-    );
+    Timer(const Duration(seconds: 3),
+        () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage())));
   }
 
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
-        print('User is currently signed out!');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
       } else {
-        print('User is signed in!');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const MapPage()));
       }
     });
 
@@ -46,8 +41,7 @@ class _SplashPageState extends State<SplashPage> {
               children: [
                 const Icon(Icons.gesture, size: 200),
                 Text('app_name'.tr(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 24.0))
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0))
               ]),
         ));
   }
