@@ -64,13 +64,15 @@ class _SignInPasswordPageState extends State<SignInPasswordPage> {
                             }
 
                             try {
-                              print("wanna sign in start ${widget.email}");
+                              print(
+                                  "wanna sign in start ${widget.email} : ${_passwordTextController.text}");
                               await FirebaseAuth.instance.signInWithEmailAndPassword(
                                   email: widget.email, password: _passwordTextController.text);
 
-                              print("wanna sign in pop");
+                              print("wanna sign in with password");
                               Navigator.pop(context, null);
-                              MaterialPageRoute(builder: (context) => const MapPage());
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const MapPage()));
                             } on FirebaseAuthException catch (e) {
                               print("wanna ${e.code}");
                               if (e.code == 'user-not-found') {

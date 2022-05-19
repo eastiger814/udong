@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: 1.0.2
   firebase_core: 1.17.0
   firebase_auth: 3.3.18
+  google_sign_in: 5.3.1
   #https://pub.dev/packages/easy_localization
   easy_localization: 3.0.1
 

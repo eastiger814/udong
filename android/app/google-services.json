@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "329370260671-hp7jgtibsi92q8dvu0jfajreegdvqud6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eastiger.udon",
+            "certificate_hash": "3b39c22f0cd744188793a97d1a39e7ca749f9651"
+          }
+        },
+        {
+          "client_id": "329370260671-iu08g5i5r327cqetpo8qk342ejhv214d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eastiger.udon",
+            "certificate_hash": "292ea9a33a49515a059e2254dce69c6a970fded3"
+          }
+        },
+        {
           "client_id": "329370260671-mohi59fb6ea1mjepr8bd4ut1fn1463lg.apps.googleusercontent.com",
           "client_type": 3
         }

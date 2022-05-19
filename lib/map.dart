@@ -43,9 +43,7 @@ class _MapPageState extends State<MapPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.gesture, size: 200),
-              Text('Map',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0))
+              Text('Map', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0))
             ]),
       ),
       floatingActionButton: FloatingActionButton(
