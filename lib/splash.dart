@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'login.dart';
+import 'signin.dart';
 import 'map.dart';
 
 class SplashPage extends StatefulWidget {
@@ -15,19 +15,13 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(const Duration(seconds: 3),
-        () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage())));
-  }
 
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       Navigator.pop(context);
       if (user == null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SignInPage()));
       } else {
         Navigator.push(context, MaterialPageRoute(builder: (context) => const MapPage()));
       }

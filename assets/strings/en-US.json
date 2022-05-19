@@ -8,12 +8,14 @@
   "login": "Login",
   "confirm": "Confirm",
   "warning": "Warning",
+  "error": "Error",
   "sign_up": {
     "title": "Sign up",
     "content": "Please input account you want to create.",
     "email_empty": "E-mail is empty. Please input e-mail.",
     "email_incorrect": "E-mail is not correct.",
     "email_duplicate_check": "Duplicate check",
+    "email_exist": "The account already exists for that email.",
     "password_incorrect": "Password is not correct. Please input password over 7.",
     "password_is_not_same": "Password is not same. Please check password."
   }

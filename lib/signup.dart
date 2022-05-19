@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:udon/popup.dart';
 
 import 'sign_validate.dart';
 
@@ -69,9 +70,23 @@ class _SignUpPageState extends State<SignUpPage> {
 
                             Navigator.pop(context, null);
 
-                            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                email: _emailTextController.text,
-                                password: _passwordTextController.text);
+                            try {
+                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                  email: _emailTextController.text,
+                                  password: _passwordTextController.text);
+                            } on FirebaseAuthException catch (e) {
+                              print("wanna FirebaseAuthException ${e.code}");
+                              if (e.code == 'weak-password') {
+                                print('The password provided is too weak.');
+                              } else if (e.code == 'email-already-in-use') {
+                                Popup.show(context, 'error'.tr(), 'signup.email_exist'.tr());
+                              }
+                            } catch (e) {
+                              print("wanna catch $e");
+                              print(e);
+                            }
+
+                            print("wanna end");
                           },
                           child: const Text('sign_up.title').tr()),
                     )
@@ -79,33 +94,5 @@ class _SignUpPageState extends State<SignUpPage> {
                 )),
           ),
         ));
-  }
-
-  void showAlertDialog(State state, BuildContext context, String title, String content) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            title: Text(title),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(content),
-              ],
-            ),
-            actions: <Widget>[
-              Center(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("confirm").tr()),
-              ),
-            ],
-          );
-        });
   }
 }

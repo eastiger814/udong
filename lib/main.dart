@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:udon/splash.dart';
@@ -8,15 +9,13 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await EasyLocalization.ensureInitialized();
 
-  // FirebaseAuth.instance
-  //     .authStateChanges()
-  //     .listen((User? user) {
-  //   if (user == null) {
-  //     print('User is currently signed out!');
-  //   } else {
-  //     print('User is signed in!');
-  //   }
-  // });
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
 
   runApp(
     EasyLocalization(
@@ -37,10 +36,8 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      title: 'app_name'.tr(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Udongg', //'app_name'.tr(),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const SplashPage(),
     );
   }
