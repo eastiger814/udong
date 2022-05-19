@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:udon/sign_validate.dart';
+import 'package:udon/signin_password.dart';
 import 'package:udon/signup.dart';
 
 import 'map.dart';
@@ -15,10 +16,8 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final _emailTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
 
   final _emailFocus = FocusNode();
-  final _passwordFocus = FocusNode();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -36,66 +35,78 @@ class _SignInPageState extends State<SignInPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Icon(Icons.gesture, size: 200),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 40.0),
-                      child: const Text('sign_up.content', textScaleFactor: 1.3).tr(),
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+                      child: const Text('sign_in_content', textScaleFactor: 1.3).tr(),
                     ),
-                    TextFormField(
-                        controller: _emailTextController,
-                        keyboardType: TextInputType.emailAddress,
-                        focusNode: _emailFocus,
-                        decoration: InputDecoration(
-                            border: const OutlineInputBorder(), labelText: 'e_mail'.tr()),
-                        validator: (value) =>
-                            SignValidate().validateEmail(value ?? "", _emailFocus)),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(minWidth: 400),
                       child: TextFormField(
-                        obscureText: true,
-                        controller: _passwordTextController,
-                        focusNode: _passwordFocus,
-                        decoration: InputDecoration(
-                            border: const OutlineInputBorder(), labelText: 'password'.tr()),
-                      ),
+                          controller: _emailTextController,
+                          keyboardType: TextInputType.emailAddress,
+                          focusNode: _emailFocus,
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(), labelText: 'e_mail'.tr()),
+                          validator: (value) =>
+                              SignValidate().validateEmail(value ?? "", _emailFocus)),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: ElevatedButton(
-                        child: Text('login'.tr()),
-                        onPressed: () async {
-                          if (_formKey.currentState?.validate() != true) {
-                            return;
-                          }
-
-                          try {
-                            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                email: _emailTextController.text,
-                                password: _passwordTextController.text);
-
-                            Navigator.pop(context, null);
-                            MaterialPageRoute(builder: (context) => const MapPage());
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              print('No user found for that email.');
-                            } else if (e.code == 'wrong-password') {
-                              print('Wrong password provided for that user.');
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minWidth: 400),
+                        child: ElevatedButton(
+                          child: Text('keep_going_on_email'.tr()),
+                          onPressed: () async {
+                            print("wanna LOGIN START");
+                            if (_formKey.currentState?.validate() != true) {
+                              return;
                             }
-                          } catch (e) {
-                            print("wanna catch $e");
-                            print(e);
-                          }
 
-                          print("sign in pop");
-                        },
+                            try {
+                              await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: _emailTextController.text, password: "0000");
+
+                              print("wanna create");
+                              Navigator.pop(context, null);
+                              MaterialPageRoute(builder: (context) => const MapPage());
+                            } on FirebaseAuthException catch (e) {
+                              print("wanna catch FirebaseAuthException ${e.code}");
+                              if (e.code == 'user-not-found') {
+                                print("wanna go to sign up ${_emailTextController.text}");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SignUpPage(email: _emailTextController.text)));
+                              } else if (e.code == 'wrong-password') {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SignInPasswordPage(email: _emailTextController.text)));
+                              }
+                            } catch (e) {
+                              print("wanna catch $e");
+                              print(e);
+                            }
+
+                            print("sign in pop");
+                          },
+                        ),
                       ),
                     ),
+                    const Text('or', style: TextStyle(color: Colors.grey)).tr(),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: ElevatedButton(
-                          child: const Text('sign_up.title').tr(),
-                          onPressed: () async {
-                            MaterialPageRoute(builder: (context) => const SignUpPage());
-                          }),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minWidth: 400),
+                        child: ElevatedButton(
+                            child: const Text('keep_going_on_google').tr(),
+                            onPressed: () async {
+                              // MaterialPageRoute(builder: (context) => const SignUpPage());
+                            }),
+                      ),
                     )
                   ],
                 )),

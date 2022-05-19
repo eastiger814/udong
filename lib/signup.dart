@@ -6,7 +6,9 @@ import 'package:udon/popup.dart';
 import 'sign_validate.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({Key? key, required this.email}) : super(key: key);
+
+  final String email;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -15,6 +17,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  final _confirmPasswordTextController = TextEditingController();
 
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
@@ -23,6 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    _emailTextController.text = widget.email;
     return Scaffold(
         appBar: AppBar(
           title: const Text('sign_up.title').tr(),
@@ -56,6 +60,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             labelText: 'password'.tr(),
+                          ),
+                          validator: (value) =>
+                              SignValidate().validatePassword(value ?? "", _passwordFocus)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: TextFormField(
+                          obscureText: true,
+                          controller: _confirmPasswordTextController,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: 'confirm_password'.tr(),
                           ),
                           validator: (value) =>
                               SignValidate().validatePassword(value ?? "", _passwordFocus)),

@@ -39,23 +39,14 @@ class _MapPageState extends State<MapPage> {
         title: const Text('app_name.title').tr(),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Padding(
-          padding: const EdgeInsets.only(
-              left: 30.0, top: 10.0, right: 30.0, bottom: 10.0),
-          child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 40.0),
-                    child: const Text('app_name', textScaleFactor: 2.0).tr(),
-                  )
-                ],
-              )),
-        ),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.gesture, size: 200),
+              Text('Map',
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0))
+            ]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
