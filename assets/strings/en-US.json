@@ -1,5 +1,5 @@
 {
-  "app_name": "Udong",
+  "app_name": "Udon",
   "e_mail": "E-mail",
   "help_email": "Input E-mail",
   "password": "Password",
@@ -12,6 +12,8 @@
   "login_with_password": "Login with Password",
   "sign_in_content": "Sign In",
   "confirm": "Confirm",
+  "yes": "Yes",
+  "no": "No",
   "warning": "Warning",
   "error": "Error",
   "sign_up": {
@@ -21,7 +23,12 @@
     "email_incorrect": "E-mail is not correct.",
     "email_duplicate_check": "Duplicate check",
     "email_exist": "The account already exists for that email.",
+    "email_verification_sent": "Verification e-mail sent. Please check {}",
+    "email_verification_check": "E-mail verification is not confirmed. Will you send a verification e-mail to {}?",
     "password_incorrect": "Password is not correct. Please input password over 7.",
-    "password_is_not_same": "Password is not same. Please check password."
+    "password_is_not_same": "Password is not same. Please check password.",
+    "password_reset": "Password Reset",
+    "password_reset_question": "Do you want to send an e-mail to reset password?",
+    "password_reset_toast": "Password reset e-mail sent."
   }
 }

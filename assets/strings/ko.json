@@ -11,6 +11,8 @@
   "login": "로그인",
   "login_with_password": "패스워드로 로그인",
   "confirm": "확인",
+  "yes": "예",
+  "no": "아니오",
   "warning": "경고",
   "error": "오류",
   "sign_up": {
@@ -19,8 +21,13 @@
     "email_empty": "이메일을 입력해주세요.",
     "email_incorrect": "잘못된 이메일 형식입니다.",
     "email_duplicate_check": "중복체크",
-    ,"email_exist": "이메일이 이미 존재합니다. 새로운 이메일로 생성해주세요.",
+    "email_exist": "이메일이 이미 존재합니다. 새로운 이메일로 생성해주세요.",
+    "email_verification_sent": "확인을 위한 이메일이 발송되었습니다. {} 이메일을 확인해주세요.",
+    "email_verification_check": "이메일 확인이 되지 않았습니다. {} 로 확인 이메일을 다시 수신하시겠습니까?",
     "password_incorrect": "특수문자, 대소문자, 숫자 포함 8자 이상 15자 이내로 입력하세요.",
-    "password_is_not_same": "패스워드가 동일하지 않습니다. 확인 부탁드려요."
+    "password_is_not_same": "패스워드가 동일하지 않습니다. 확인 부탁드려요.",
+    "password_reset": "패스워드 재설정",
+    "password_reset_question": "패스워드 재설정을 위해 이메일을 수신하시겠습니까?",
+    "password_reset_toast": "패스워드 재설정 이메일이 발송되었습니다."
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,50 +63,57 @@ class _SignUpPageState extends State<SignUpPage> {
                             border: const OutlineInputBorder(),
                             labelText: 'password'.tr(),
                           ),
-                          validator: (value) =>
-                              SignValidate().validatePassword(value ?? "", _passwordFocus)),
+                          validator: (value) => SignValidate().validateConfirmPassword(
+                              value ?? "", _confirmPasswordTextController.text, _passwordFocus)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: TextFormField(
-                          obscureText: true,
-                          controller: _confirmPasswordTextController,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            labelText: 'confirm_password'.tr(),
-                          ),
-                          validator: (value) =>
-                              SignValidate().validatePassword(value ?? "", _passwordFocus)),
+                        obscureText: true,
+                        controller: _confirmPasswordTextController,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: 'confirm_password'.tr(),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: ElevatedButton(
+                          child: const Text('sign_up.title').tr(),
                           onPressed: () async {
                             if (_formKey.currentState?.validate() != true) {
                               return;
                             }
 
-                            Navigator.pop(context, null);
-
                             try {
-                              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                  email: _emailTextController.text,
-                                  password: _passwordTextController.text);
+                              Popup(context: context).showConfirm(
+                                  "confirm".tr(),
+                                  "sign_up.email_verification_sent"
+                                      .tr(args: [_emailTextController.text]), () async {
+                                final navigator = Navigator.of(context);
+                                final newUser = await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: _emailTextController.text,
+                                        password: _passwordTextController.text);
+                                newUser.user?.sendEmailVerification();
+                                navigator.pop(null);
+                              });
                             } on FirebaseAuthException catch (e) {
-                              print("wanna FirebaseAuthException ${e.code}");
+                              log("wanna FirebaseAuthException ${e.code}");
                               if (e.code == 'weak-password') {
-                                print('The password provided is too weak.');
+                                log('The password provided is too weak.');
                               } else if (e.code == 'email-already-in-use') {
-                                Popup.show(context, 'error'.tr(), 'signup.email_exist'.tr());
+                                Popup(context: context)
+                                    .showConfirm('error'.tr(), 'signup.email_exist'.tr(), null);
                               }
                             } catch (e) {
-                              print("wanna catch $e");
-                              print(e);
+                              log("wanna catch $e");
+                              log(e.toString());
                             }
 
-                            print("wanna end");
-                          },
-                          child: const Text('sign_up.title').tr()),
+                            log("wanna end");
+                          }),
                     )
                   ],
                 )),

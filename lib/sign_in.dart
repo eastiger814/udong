@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:udon/sign_in_password.dart';
+import 'package:udon/sign_up.dart';
 import 'package:udon/sign_validate.dart';
-import 'package:udon/signin_password.dart';
-import 'package:udon/signup.dart';
 
+import 'email_verification_popup.dart';
 import 'map.dart';
 
 class SignInPage extends StatefulWidget {
@@ -52,48 +55,58 @@ class _SignInPageState extends State<SignInPage> {
                           validator: (value) =>
                               SignValidate().validateEmail(value ?? "", _emailFocus)),
                     ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(minWidth: 400),
-                      child: ElevatedButton(
-                        child: Text('keep_going_on_email'.tr()),
-                        onPressed: () async {
-                          print("wanna LOGIN START");
-                          if (_formKey.currentState?.validate() != true) {
-                            return;
-                          }
-
-                          try {
-                            await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                email: _emailTextController.text, password: "0000");
-
-                            print("wanna create");
-                            Navigator.pop(context, null);
-                            MaterialPageRoute(builder: (context) => const MapPage());
-                          } on FirebaseAuthException catch (e) {
-                            print("wanna catch FirebaseAuthException ${e.code}");
-                            if (e.code == 'user-not-found') {
-                              print("wanna go to sign up ${_emailTextController.text}");
-                              Navigator.pop(context, null);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SignUpPage(email: _emailTextController.text)));
-                            } else if (e.code == 'wrong-password') {
-                              Navigator.pop(context, null);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          SignInPasswordPage(email: _emailTextController.text)));
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minWidth: 400),
+                        child: ElevatedButton(
+                          child: Text('keep_going_on_email'.tr()),
+                          onPressed: () async {
+                            log("wanna LOGIN START");
+                            if (_formKey.currentState?.validate() != true) {
+                              return;
                             }
-                          } catch (e) {
-                            print("wanna catch $e");
-                            print(e);
-                          }
 
-                          print("sign in pop");
-                        },
+                            try {
+                              final navigator = Navigator.of(context);
+                              var emailVerificationPopup = EmailVerificationPopup(context);
+                              final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                  email: _emailTextController.text, password: "0000");
+
+                              log("wanna email verification ${user.user?.emailVerified}");
+                              if (user.user?.emailVerified != true) {
+                                emailVerificationPopup.show(user.user?.email ?? "", () async {
+                                  await user.user?.sendEmailVerification();
+                                });
+                                return;
+                              }
+
+                              log("wanna create");
+                              navigator.pop(null);
+                              MaterialPageRoute(builder: (context) => const MapPage());
+                            } on FirebaseAuthException catch (e) {
+                              log("wanna catch FirebaseAuthException ${e.code}");
+                              if (e.code == 'user-not-found') {
+                                log("wanna go to sign up ${_emailTextController.text}");
+                                final navigator = Navigator.of(context);
+                                navigator.push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        SignUpPage(email: _emailTextController.text)));
+                              } else if (e.code == 'wrong-password') {
+                                final navigator = Navigator.of(context);
+                                navigator.pop(null);
+                                navigator.push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        SignInPasswordPage(email: _emailTextController.text)));
+                              }
+                            } catch (e) {
+                              log("wanna catch $e");
+                              log(e.toString());
+                            }
+
+                            log("sign in pop");
+                          },
+                        ),
                       ),
                     ),
                     Padding(
@@ -107,12 +120,13 @@ class _SignInPageState extends State<SignInPage> {
                         child: ElevatedButton(
                             child: const Text('keep_going_on_google').tr(),
                             onPressed: () async {
+                              final navigator = Navigator.of(context);
                               await signInWithGoogle();
 
-                              print("wanna sign in google");
-                              Navigator.pop(context, null);
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => const MapPage()));
+                              log("wanna sign in google");
+                              navigator.pop(null);
+                              navigator
+                                  .push(MaterialPageRoute(builder: (context) => const MapPage()));
                             }),
                       ),
                     )
@@ -133,13 +147,11 @@ class _SignInPageState extends State<SignInPage> {
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-    print("sign in google");
+    log("sign in google");
     // Once signed in, return the UserCredential
     await FirebaseAuth.instance.signInWithCredential(credential);
 
-    print("sign in google go to map");
-    // Navigator.pop(context);
-    // Navigator.push(context, MaterialPageRoute(builder: (context) => const MapPage()));
+    log("sign in google go to map");
   }
 
   void _incrementCounter() {

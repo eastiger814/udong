@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:udon/popup.dart';
 
 class SignValidate {
   String? validateEmail(String value, FocusNode focusNode) {
@@ -34,8 +35,7 @@ class SignValidate {
     return null;
   }
 
-  String? validateConfirmPassword(
-      String password, String confirmPassword, FocusNode focusNode) {
+  String? validateConfirmPassword(String password, String confirmPassword, FocusNode focusNode) {
     String? validateResult = validatePassword(password, focusNode);
     if (validateResult != null) {
       return validateResult;

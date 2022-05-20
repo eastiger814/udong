@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,9 +13,9 @@ Future<void> main() async {
 
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
-      print('User is currently signed out!');
+      log('User is currently signed out!');
     } else {
-      print('User is signed in!');
+      log('User is signed in!');
     }
   });
 
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      title: 'Udongg', //'app_name'.tr(),
+      title: 'Udon', //'app_name'.tr(),
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const SplashPage(),
     );
