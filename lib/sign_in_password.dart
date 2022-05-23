@@ -42,7 +42,7 @@ class _SignInPasswordPageState extends State<SignInPasswordPage> {
                     const Icon(Icons.gesture, size: 200),
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
-                      child: const Text('sign_in_content', textScaleFactor: 1.3).tr(),
+                      child: Text('sign_in_content'.tr(), textScaleFactor: 1.3),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),

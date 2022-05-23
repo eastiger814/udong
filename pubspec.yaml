@@ -44,6 +44,9 @@ dependencies:
   easy_localization: 3.0.1
   fluttertoast: 8.0.9
 
+  google_maps_flutter: 2.1.5
+  location: 4.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

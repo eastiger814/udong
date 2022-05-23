@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -9,48 +13,113 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  final _idTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
-  final _confirmPasswordTextController = TextEditingController();
-
-  final _emailFocus = FocusNode();
-  final _passwordFocus = FocusNode();
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  void _incrementCounter() {
-    setState(() {
-      // _counter++;
-    });
+  final Completer<GoogleMapController> _controller = Completer();
+  double _lat = 37.785834;
+  double _lng = -122.406417;
+  Location location = Location();
+  bool _serviceEnabled = false;
+  PermissionStatus _permissionGranted = PermissionStatus.denied;
+  late CameraPosition _currentPosition;
+
+  static const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
+  @override
+  initState() {
+    super.initState();
+    _currentPosition = CameraPosition(
+      target: LatLng(_lat, _lng),
+      zoom: 12,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('app_name.title').tr(),
       ),
-      body: Center(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Map', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0))
-            ]),
+      body: Stack(
+        children: [
+          GoogleMap(
+              mapType: MapType.hybrid,
+              initialCameraPosition: _currentPosition,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              }),
+          Align(
+            alignment: AlignmentDirectional.bottomStart,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: GestureDetector(
+                  onTap: _goToCurrentLocation,
+                  child: const Icon(
+                    Icons.my_location,
+                    color: Colors.lightBlueAccent,
+                    size: 50.0,
+                  )),
+            ),
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 30.0),
+        child: FloatingActionButton.extended(
+          onPressed: _goToTheLake,
+          label: const Text('To the lake!'),
+          icon: const Icon(Icons.directions_boat),
+        ),
+      ),
     );
   }
+
+  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  }
+
+  _goToCurrentLocation() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    await location.getLocation().then((res) async {
+      final GoogleMapController controller = await _controller.future;
+
+      final position = CameraPosition(
+        target: LatLng(res.latitude ?? _lat, res.longitude ?? _lng),
+        zoom: 12,
+      );
+      controller.animateCamera(CameraUpdate.newCameraPosition(position));
+      setState(() {
+        _lat = res.latitude ?? _lat;
+        _lng = res.longitude ?? _lng;
+      });
+    });
+  }
 }
+
+//class GeoLocatorService {
+//  Future<Position> getLocation() async {
+//    Position position =
+//    await getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+//    return position;
+//  }
+//}
